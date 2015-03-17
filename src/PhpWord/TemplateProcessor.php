@@ -233,14 +233,10 @@ class TemplateProcessor
     public function cloneBlock($blockname, $clones = 1, $replace = true)
     {
         $xmlBlock = null;
-        preg_match(
-            '/(<\?xml.*)(<w:p.*>\${' . $blockname . '}<\/w:.*?p>)(.*)(<w:p.*\${\/' . $blockname . '}<\/w:.*?p>)/is',
-            $this->temporaryDocumentMainPart,
-            $matches
-        );
+        list($open, $body, $close) = $this->getBlockXml($blockname);
 
-        if (isset($matches[3])) {
-            $xmlBlock = $matches[3];
+        if ($body) {
+            $xmlBlock = $body;
             $cloned = array();
             for ($i = 1; $i <= $clones; $i++) {
                 $cloned[] = $xmlBlock;
@@ -248,7 +244,7 @@ class TemplateProcessor
 
             if ($replace) {
                 $this->temporaryDocumentMainPart = str_replace(
-                    $matches[2] . $matches[3] . $matches[4],
+                    $open . $body . $close,
                     implode('', $cloned),
                     $this->temporaryDocumentMainPart
                 );
@@ -267,15 +263,11 @@ class TemplateProcessor
      */
     public function replaceBlock($blockname, $replacement)
     {
-        preg_match(
-            '/(<\?xml.*)(<w:p.*>\${' . $blockname . '}<\/w:.*?p>)(.*)(<w:p.*\${\/' . $blockname . '}<\/w:.*?p>)/is',
-            $this->temporaryDocumentMainPart,
-            $matches
-        );
+        $block = $this->getBlockXml($blockname);
 
-        if (isset($matches[3])) {
+        if ($block) {
             $this->temporaryDocumentMainPart = str_replace(
-                $matches[2] . $matches[3] . $matches[4],
+                implode('', $block),
                 $replacement,
                 $this->temporaryDocumentMainPart
             );
@@ -414,16 +406,7 @@ class TemplateProcessor
      */
     protected function findRowStart($offset)
     {
-        $rowStart = strrpos($this->temporaryDocumentMainPart, '<w:tr ', ((strlen($this->temporaryDocumentMainPart) - $offset) * -1));
-
-        if (!$rowStart) {
-            $rowStart = strrpos($this->temporaryDocumentMainPart, '<w:tr>', ((strlen($this->temporaryDocumentMainPart) - $offset) * -1));
-        }
-        if (!$rowStart) {
-            throw new Exception('Can not find the start position of the row to clone.');
-        }
-
-        return $rowStart;
+        return $this->findClosestOpenTag('w:p', $offset, 'Can not find the start position of the row to clone.');
     }
 
     /**
@@ -434,7 +417,7 @@ class TemplateProcessor
      */
     protected function findRowEnd($offset)
     {
-        return strpos($this->temporaryDocumentMainPart, '</w:tr>', $offset) + 7;
+        return $this->findClosestCloseTag('w:tr', $offset);
     }
 
     /**
@@ -452,4 +435,47 @@ class TemplateProcessor
 
         return substr($this->temporaryDocumentMainPart, $startPosition, ($endPosition - $startPosition));
     }
+
+    function getBlockXml($name) {
+        $openSearch  = '${' . $name . '}';
+        $closeSearch = '${/' . $name . '}';
+
+        list($openPStart, $openPEnd) = $this->findParagraphWithPlaceholder($openSearch);
+        list($closePStart, $closePEnd) = $this->findParagraphWithPlaceholder($closeSearch);
+
+        $blockOpen  = subStr($this->temporaryDocumentMainPart, $openPStart, $openPEnd - $openPStart);
+        $blockBody  = subStr($this->temporaryDocumentMainPart, $openPEnd, $closePStart - $openPEnd);
+        $blockClose = subStr($this->temporaryDocumentMainPart, $closePStart, $closePEnd - $closePStart);
+
+        return array($blockOpen, $blockBody, $blockClose);
+    }
+
+    protected function findParagraphWithPlaceholder($placeholder) {
+        $pos   = strPos($this->temporaryDocumentMainPart, $placeholder);
+        $start = $this->findClosestOpenTag('w:p', $pos);
+        $end   = $this->findClosestCloseTag('w:p', $pos);
+
+        return array($start, $end);
+    }
+
+    protected function findClosestOpenTag($tag, $offset, $notFoundMessage = null)
+    {
+        $startAt = (strLen($this->temporaryDocumentMainPart) - $offset) * -1;
+        $result  = strRPos($this->temporaryDocumentMainPart, '<' . $tag . ' ', $startAt);
+
+        if (!$result) {
+            $result = strRPos($this->temporaryDocumentMainPart, '<' . $tag . '>', $startAt);
+        }
+        if (!$result) {
+            throw new Exception($notFoundMessage ? $notFoundMessage : 'Can not find the start position of the <' . $tag . '>');
+        }
+
+        return $result;
+    }
+
+    protected function findClosestCloseTag($tag, $offset)
+    {
+        return strPos($this->temporaryDocumentMainPart, '</' . $tag . '>', $offset) + strLen($tag) + 3;
+    }
+
 }
