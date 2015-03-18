@@ -223,7 +223,7 @@ class TemplateProcessor
         for ($i = 1; $i <= $numberOfClones; $i++) {
             $result .= preg_replace('/\$\{(.*?)\}/', '\${\\1#' . $i . '}', $xmlRow);
         }
-        $result .= $this->getSlice($rowEnd, $source);
+        $result .= $this->getSlice($rowEnd, false, $source);
 
         if ($saveToMainPart) {
             $this->temporaryDocumentMainPart = $result;
@@ -417,7 +417,7 @@ class TemplateProcessor
      */
     protected function findRowStart($offset, $source = null)
     {
-        return $this->findClosestOpenTag('w:p', $offset, $source, 'Can not find the start position of the row to clone.');
+        return $this->findClosestOpenTag('w:tr', $offset, $source, 'Can not find the start position of the row to clone.');
     }
 
     /**
