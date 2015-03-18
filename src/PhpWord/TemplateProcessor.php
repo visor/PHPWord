@@ -170,31 +170,37 @@ class TemplateProcessor
      *
      * @param string $search
      * @param integer $numberOfClones
-     * @return void
+     * @param string|null $source
+     * @return string
      * @throws \PhpOffice\PhpWord\Exception\Exception
      */
-    public function cloneRow($search, $numberOfClones)
+    public function cloneRow($search, $numberOfClones, $source = null)
     {
+        $saveToMainPart = false;
+        if (null === $source) {
+            $saveToMainPart = true;
+            $source = $this->temporaryDocumentMainPart;
+        }
         if (substr($search, 0, 2) !== '${' && substr($search, -1) !== '}') {
             $search = '${' . $search . '}';
         }
 
-        $tagPos = strpos($this->temporaryDocumentMainPart, $search);
+        $tagPos = strpos($source, $search);
         if (!$tagPos) {
             throw new Exception("Can not clone row, template variable not found or variable contains markup.");
         }
 
-        $rowStart = $this->findRowStart($tagPos);
-        $rowEnd = $this->findRowEnd($tagPos);
-        $xmlRow = $this->getSlice($rowStart, $rowEnd);
+        $rowStart = $this->findRowStart($tagPos, $source);
+        $rowEnd = $this->findRowEnd($tagPos, $source);
+        $xmlRow = $this->getSlice($rowStart, $rowEnd, $source);
 
         // Check if there's a cell spanning multiple rows.
         if (preg_match('#<w:vMerge w:val="restart"/>#', $xmlRow)) {
             // $extraRowStart = $rowEnd;
             $extraRowEnd = $rowEnd;
             while (true) {
-                $extraRowStart = $this->findRowStart($extraRowEnd + 1);
-                $extraRowEnd = $this->findRowEnd($extraRowEnd + 1);
+                $extraRowStart = $this->findRowStart($extraRowEnd + 1, $source);
+                $extraRowEnd = $this->findRowEnd($extraRowEnd + 1, $source);
 
                 // If extraRowEnd is lower then 7, there was no next row found.
                 if ($extraRowEnd < 7) {
@@ -202,7 +208,7 @@ class TemplateProcessor
                 }
 
                 // If tmpXmlRow doesn't contain continue, this row is no longer part of the spanned row.
-                $tmpXmlRow = $this->getSlice($extraRowStart, $extraRowEnd);
+                $tmpXmlRow = $this->getSlice($extraRowStart, $extraRowEnd, $source);
                 if (!preg_match('#<w:vMerge/>#', $tmpXmlRow) &&
                     !preg_match('#<w:vMerge w:val="continue" />#', $tmpXmlRow)) {
                     break;
@@ -210,16 +216,20 @@ class TemplateProcessor
                 // This row was a spanned row, update $rowEnd and search for the next row.
                 $rowEnd = $extraRowEnd;
             }
-            $xmlRow = $this->getSlice($rowStart, $rowEnd);
+            $xmlRow = $this->getSlice($rowStart, $rowEnd, $source);
         }
 
-        $result = $this->getSlice(0, $rowStart);
+        $result = $this->getSlice(0, $rowStart, $source);
         for ($i = 1; $i <= $numberOfClones; $i++) {
             $result .= preg_replace('/\$\{(.*?)\}/', '\${\\1#' . $i . '}', $xmlRow);
         }
-        $result .= $this->getSlice($rowEnd);
+        $result .= $this->getSlice($rowEnd, $source);
 
-        $this->temporaryDocumentMainPart = $result;
+        if ($saveToMainPart) {
+            $this->temporaryDocumentMainPart = $result;
+        }
+
+        return $result;
     }
 
     /**
@@ -401,23 +411,25 @@ class TemplateProcessor
      * Find the start position of the nearest table row before $offset.
      *
      * @param integer $offset
+     * @param string|null $source
      * @return integer
      * @throws \PhpOffice\PhpWord\Exception\Exception
      */
-    protected function findRowStart($offset)
+    protected function findRowStart($offset, $source = null)
     {
-        return $this->findClosestOpenTag('w:p', $offset, 'Can not find the start position of the row to clone.');
+        return $this->findClosestOpenTag('w:p', $offset, $source, 'Can not find the start position of the row to clone.');
     }
 
     /**
      * Find the end position of the nearest table row after $offset.
      *
      * @param integer $offset
+     * @param string|null $source
      * @return integer
      */
-    protected function findRowEnd($offset)
+    protected function findRowEnd($offset, $source = null)
     {
-        return $this->findClosestCloseTag('w:tr', $offset);
+        return $this->findClosestCloseTag('w:tr', $offset, $source);
     }
 
     /**
@@ -425,15 +437,19 @@ class TemplateProcessor
      *
      * @param integer $startPosition
      * @param integer $endPosition
+     * @param string|null $source
      * @return string
      */
-    protected function getSlice($startPosition, $endPosition = 0)
+    protected function getSlice($startPosition, $endPosition = 0, $source = null)
     {
+        if (null === $source) {
+            $source = $this->temporaryDocumentMainPart;
+        }
         if (!$endPosition) {
-            $endPosition = strlen($this->temporaryDocumentMainPart);
+            $endPosition = strlen($source);
         }
 
-        return substr($this->temporaryDocumentMainPart, $startPosition, ($endPosition - $startPosition));
+        return substr($source, $startPosition, ($endPosition - $startPosition));
     }
 
     function getBlockXml($name) {
@@ -458,13 +474,16 @@ class TemplateProcessor
         return array($start, $end);
     }
 
-    protected function findClosestOpenTag($tag, $offset, $notFoundMessage = null)
+    protected function findClosestOpenTag($tag, $offset, $source = null, $notFoundMessage = null)
     {
-        $startAt = (strLen($this->temporaryDocumentMainPart) - $offset) * -1;
-        $result  = strRPos($this->temporaryDocumentMainPart, '<' . $tag . ' ', $startAt);
+        if (null === $source) {
+            $source = $this->temporaryDocumentMainPart;
+        }
+        $startAt = (strLen($source) - $offset) * -1;
+        $result  = strRPos($source, '<' . $tag . ' ', $startAt);
 
         if (!$result) {
-            $result = strRPos($this->temporaryDocumentMainPart, '<' . $tag . '>', $startAt);
+            $result = strRPos($source, '<' . $tag . '>', $startAt);
         }
         if (!$result) {
             throw new Exception($notFoundMessage ? $notFoundMessage : 'Can not find the start position of the <' . $tag . '>');
@@ -473,9 +492,12 @@ class TemplateProcessor
         return $result;
     }
 
-    protected function findClosestCloseTag($tag, $offset)
+    protected function findClosestCloseTag($tag, $offset, $source = null)
     {
-        return strPos($this->temporaryDocumentMainPart, '</' . $tag . '>', $offset) + strLen($tag) + 3;
+        if (null === $source) {
+            $source = $this->temporaryDocumentMainPart;
+        }
+        return strPos($source, '</' . $tag . '>', $offset) + strLen($tag) + 3;
     }
 
 }
