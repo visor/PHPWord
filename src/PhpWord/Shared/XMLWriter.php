@@ -23,12 +23,12 @@ use PhpOffice\PhpWord\Settings;
  * XMLWriter wrapper
  *
  * @method bool endElement()
- * @method bool startDocument(string $version = 1.0, string $encoding = null, string $standalone = null)
- * @method bool startElement(string $name)
- * @method bool text(string $content)
- * @method bool writeAttribute(string $name, mixed $value)
- * @method bool writeElement(string $name, string $content = null)
- * @method bool writeRaw(string $content)
+ * @method bool startDocument(SharedString $version = 1.0, SharedString $encoding = null, SharedString $standalone = null)
+ * @method bool startElement(SharedString $name)
+ * @method bool text(SharedString $content)
+ * @method bool writeAttribute(SharedString $name, mixed $value)
+ * @method bool writeElement(SharedString $name, SharedString $content = null)
+ * @method bool writeRaw(SharedString $content)
  */
 class XMLWriter
 {
@@ -46,7 +46,7 @@ class XMLWriter
     /**
      * Temporary filename
      *
-     * @var string
+     * @var SharedString
      */
     private $tempFile = '';
 
@@ -54,7 +54,7 @@ class XMLWriter
      * Create new XMLWriter
      *
      * @param int $tempLocation Temporary storage location
-     * @param string $tempFolder Temporary storage folder
+     * @param SharedString $tempFolder Temporary storage folder
      */
     public function __construct($tempLocation = self::STORAGE_MEMORY, $tempFolder = './')
     {
@@ -127,7 +127,7 @@ class XMLWriter
     /**
      * Get written data
      *
-     * @return string XML data
+     * @return SharedString XML data
      */
     public function getData()
     {
@@ -146,9 +146,9 @@ class XMLWriter
      * 1. If the `$attributes` is an array, then it's an associative array of attributes
      * 2. If not, then it's a simple attribute-value pair
      *
-     * @param string $element
-     * @param string|array $attributes
-     * @param string $value
+     * @param SharedString $element
+     * @param SharedString|array $attributes
+     * @param SharedString $value
      * @return void
      */
     public function writeElementBlock($element, $attributes, $value = null)
@@ -167,8 +167,8 @@ class XMLWriter
      * Write element if ...
      *
      * @param bool $condition
-     * @param string $element
-     * @param string $attribute
+     * @param SharedString $element
+     * @param SharedString $attribute
      * @param mixed $value
      * @return void
      */
@@ -189,7 +189,7 @@ class XMLWriter
      * Write attribute if ...
      *
      * @param bool $condition
-     * @param string $attribute
+     * @param SharedString $attribute
      * @param mixed $value
      * @return void
      */

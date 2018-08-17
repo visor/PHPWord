@@ -61,7 +61,7 @@ class OLERead
     /**
      * Read the file
      *
-     * @param $sFileName string Filename
+     * @param $sFileName SharedString Filename
      * @throws Exception
      */
     public function read($sFileName)
@@ -159,7 +159,7 @@ class OLERead
     /**
      * Extract binary stream data
      *
-     * @return string
+     * @return SharedString
      */
     public function getStream($stream)
     {
@@ -208,7 +208,7 @@ class OLERead
      * Read a standard stream (by joining sectors using information from SAT)
      *
      * @param int $blSectorId Sector ID where the stream starts
-     * @return string Data for standard stream
+     * @return SharedString Data for standard stream
      */
     private function readData($blSectorId)
     {
@@ -292,7 +292,7 @@ class OLERead
     /**
      * Read 4 bytes of data at specified position
      *
-     * @param string $data
+     * @param SharedString $data
      * @param int $pos
      * @return int
      */

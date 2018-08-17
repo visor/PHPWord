@@ -252,7 +252,7 @@ class Converter
     /**
      * Convert HTML hexadecimal to RGB
      *
-     * @param string $value HTML Color in hexadecimal
+     * @param SharedString $value HTML Color in hexadecimal
      * @return array Value in RGB
      */
     public static function htmlToRgb($value)

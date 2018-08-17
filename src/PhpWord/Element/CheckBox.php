@@ -17,7 +17,7 @@
 
 namespace PhpOffice\PhpWord\Element;
 
-use PhpOffice\PhpWord\Shared\String;
+use PhpOffice\PhpWord\Shared\SharedString;
 
 /**
  * Check box element
@@ -29,15 +29,15 @@ class CheckBox extends Text
     /**
      * Name content
      *
-     * @var string
+     * @var SharedString
      */
     private $name;
 
     /**
      * Create new instance
      *
-     * @param string $name
-     * @param string $text
+     * @param SharedString $name
+     * @param SharedString $text
      * @param mixed $fontStyle
      * @param mixed $paragraphStyle
      * @return self
@@ -51,12 +51,12 @@ class CheckBox extends Text
     /**
      * Set name content
      *
-     * @param string $name
+     * @param SharedString $name
      * @return self
      */
     public function setName($name)
     {
-        $this->name = String::toUTF8($name);
+        $this->name = SharedString::toUTF8($name);
 
         return $this;
     }
@@ -64,7 +64,7 @@ class CheckBox extends Text
     /**
      * Get name content
      *
-     * @return string
+     * @return SharedString
      */
     public function getName()
     {

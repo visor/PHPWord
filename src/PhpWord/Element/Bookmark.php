@@ -17,7 +17,7 @@
 
 namespace PhpOffice\PhpWord\Element;
 
-use PhpOffice\PhpWord\Shared\String;
+use PhpOffice\PhpWord\Shared\SharedString;
 use PhpOffice\PhpWord\Style;
 
 /**
@@ -28,7 +28,7 @@ class Bookmark extends AbstractElement
     /**
      * Bookmark Name
      *
-     * @var string
+     * @var SharedString
      */
     private $name;
 
@@ -42,19 +42,19 @@ class Bookmark extends AbstractElement
     /**
      * Create a new Bookmark Element
      *
-     * @param string $name
+     * @param SharedString $name
      */
     public function __construct($name)
     {
 
-        $this->name = String::toUTF8($name);
+        $this->name = SharedString::toUTF8($name);
         return $this;
     }
 
     /**
      * Get Bookmark name
      *
-     * @return string
+     * @return SharedString
      */
     public function getName()
     {

@@ -191,7 +191,7 @@ class Drawing
     /**
      * Convert HTML hexadecimal to RGB
      *
-     * @param string $pValue HTML Color in hexadecimal
+     * @param SharedString $pValue HTML Color in hexadecimal
      * @return array Value in RGB
      */
     public static function htmlToRGB($pValue)

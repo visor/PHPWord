@@ -23,7 +23,7 @@ use PhpOffice\PhpWord\Style\Image as ImageStyle;
 /**
  * Object element
  */
-class Object extends AbstractElement
+class ObjectElement extends AbstractElement
 {
     /**
      * Ole-Object Src

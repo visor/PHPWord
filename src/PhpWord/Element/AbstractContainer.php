@@ -37,7 +37,7 @@ namespace PhpOffice\PhpWord\Element;
  * @method PageBreak addPageBreak()
  * @method Table addTable(mixed $style = null)
  * @method Image addImage(string $source, mixed $style = null, bool $isWatermark = false)
- * @method Object addObject(string $source, mixed $style = null)
+ * @method ObjectElement addObject(string $source, mixed $style = null)
  * @method TextBox addTextBox(mixed $style = null)
  * @method Field addField(string $type = null, array $properties = array(), array $options = array())
  * @method Line addLine(mixed $lineStyle = null)

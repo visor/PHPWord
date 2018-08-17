@@ -17,7 +17,7 @@
 
 namespace PhpOffice\PhpWord\Element;
 
-use PhpOffice\PhpWord\Shared\String;
+use PhpOffice\PhpWord\Shared\SharedString;
 use PhpOffice\PhpWord\Style\Font;
 use PhpOffice\PhpWord\Style\Paragraph;
 
@@ -29,28 +29,28 @@ class Text extends AbstractElement
     /**
      * Text content
      *
-     * @var string
+     * @var SharedString
      */
     protected $text;
 
     /**
      * Text style
      *
-     * @var string|\PhpOffice\PhpWord\Style\Font
+     * @var SharedString|\PhpOffice\PhpWord\Style\Font
      */
     protected $fontStyle;
 
     /**
      * Paragraph style
      *
-     * @var string|\PhpOffice\PhpWord\Style\Paragraph
+     * @var SharedString|\PhpOffice\PhpWord\Style\Paragraph
      */
     protected $paragraphStyle;
 
     /**
      * Create a new Text Element
      *
-     * @param string $text
+     * @param SharedString $text
      * @param mixed $fontStyle
      * @param mixed $paragraphStyle
      */
@@ -64,9 +64,9 @@ class Text extends AbstractElement
     /**
      * Set Text style
      *
-     * @param string|array|\PhpOffice\PhpWord\Style\Font $style
-     * @param string|array|\PhpOffice\PhpWord\Style\Paragraph $paragraphStyle
-     * @return string|\PhpOffice\PhpWord\Style\Font
+     * @param SharedString|array|\PhpOffice\PhpWord\Style\Font $style
+     * @param SharedString|array|\PhpOffice\PhpWord\Style\Paragraph $paragraphStyle
+     * @return SharedString|\PhpOffice\PhpWord\Style\Font
      */
     public function setFontStyle($style = null, $paragraphStyle = null)
     {
@@ -89,7 +89,7 @@ class Text extends AbstractElement
     /**
      * Get Text style
      *
-     * @return string|\PhpOffice\PhpWord\Style\Font
+     * @return SharedString|\PhpOffice\PhpWord\Style\Font
      */
     public function getFontStyle()
     {
@@ -99,8 +99,8 @@ class Text extends AbstractElement
     /**
      * Set Paragraph style
      *
-     * @param string|array|\PhpOffice\PhpWord\Style\Paragraph $style
-     * @return string|\PhpOffice\PhpWord\Style\Paragraph
+     * @param SharedString|array|\PhpOffice\PhpWord\Style\Paragraph $style
+     * @return SharedString|\PhpOffice\PhpWord\Style\Paragraph
      */
     public function setParagraphStyle($style = null)
     {
@@ -121,7 +121,7 @@ class Text extends AbstractElement
     /**
      * Get Paragraph style
      *
-     * @return string|\PhpOffice\PhpWord\Style\Paragraph
+     * @return SharedString|\PhpOffice\PhpWord\Style\Paragraph
      */
     public function getParagraphStyle()
     {
@@ -131,12 +131,12 @@ class Text extends AbstractElement
     /**
      * Set text content
      *
-     * @param string $text
+     * @param SharedString $text
      * @return self
      */
     public function setText($text)
     {
-        $this->text = String::toUTF8($text);
+        $this->text = SharedString::toUTF8($text);
 
         return $this;
     }
@@ -144,7 +144,7 @@ class Text extends AbstractElement
     /**
      * Get Text content
      *
-     * @return string
+     * @return SharedString
      */
     public function getText()
     {

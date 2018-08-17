@@ -17,7 +17,7 @@
 
 namespace PhpOffice\PhpWord\Style;
 
-use PhpOffice\PhpWord\Shared\String;
+use PhpOffice\PhpWord\Shared\SharedString;
 
 /**
  * Abstract style class
@@ -29,7 +29,7 @@ abstract class AbstractStyle
     /**
      * Style name
      *
-     * @var string
+     * @var SharedString
      */
     protected $styleName;
 
@@ -60,7 +60,7 @@ abstract class AbstractStyle
     /**
      * Get style name
      *
-     * @return string
+     * @return SharedString
      */
     public function getStyleName()
     {
@@ -70,7 +70,7 @@ abstract class AbstractStyle
     /**
      * Set style name
      *
-     * @param string $value
+     * @param SharedString $value
      * @return self
      */
     public function setStyleName($value)
@@ -130,7 +130,7 @@ abstract class AbstractStyle
      * Return style value of child style object, e.g. `left` from `Indentation` child style of `Paragraph`
      *
      * @param \PhpOffice\PhpWord\Style\AbstractStyle $substyleObject
-     * @param string $substyleProperty
+     * @param SharedString $substyleProperty
      * @return mixed
      * @since 0.12.0
      */
@@ -152,8 +152,8 @@ abstract class AbstractStyle
      * prefix for their private properties.
      * Check if the set method is exists. Throws an exception?
      *
-     * @param string $key
-     * @param string $value
+     * @param SharedString $key
+     * @param SharedString $value
      * @return self
      */
     public function setStyleValue($key, $value)
@@ -161,7 +161,7 @@ abstract class AbstractStyle
         if (isset($this->aliases[$key])) {
             $key = $this->aliases[$key];
         }
-        $method = 'set' . String::removeUnderscorePrefix($key);
+        $method = 'set' . SharedString::removeUnderscorePrefix($key);
         if (method_exists($this, $method)) {
             $this->$method($value);
         }
@@ -187,9 +187,9 @@ abstract class AbstractStyle
     /**
      * Set default for null and empty value
      *
-     * @param string $value (was: mixed)
-     * @param string $default (was: mixed)
-     * @return string (was: mixed)
+     * @param SharedString $value (was: mixed)
+     * @param SharedString $default (was: mixed)
+     * @return SharedString (was: mixed)
      */
     protected function setNonEmptyVal($value, $default)
     {
@@ -296,7 +296,7 @@ abstract class AbstractStyle
      * Set object value
      *
      * @param mixed $value
-     * @param string $styleName
+     * @param SharedString $styleName
      * @param mixed &$style
      * @return mixed
      */

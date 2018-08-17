@@ -18,7 +18,7 @@
 namespace PhpOffice\PhpWord\Writer\Word2007\Element;
 
 use PhpOffice\PhpWord\Element\AbstractElement as Element;
-use PhpOffice\PhpWord\Shared\String;
+use PhpOffice\PhpWord\Shared\SharedString;
 use PhpOffice\PhpWord\Shared\XMLWriter;
 
 /**
@@ -141,7 +141,7 @@ abstract class AbstractElement
     /**
      * Write text style.
      *
-     * @param string $styleType Font|Paragraph
+     * @param SharedString $styleType Font|Paragraph
      * @return void
      */
     private function writeTextStyle($styleType)
@@ -162,11 +162,11 @@ abstract class AbstractElement
     /**
      * Convert text to valid format
      *
-     * @param string $text
-     * @return string
+     * @param SharedString $text
+     * @return SharedString
      */
     protected function getText($text)
     {
-        return String::controlCharacterPHP2OOXML($text);
+        return SharedString::controlCharacterPHP2OOXML($text);
     }
 }

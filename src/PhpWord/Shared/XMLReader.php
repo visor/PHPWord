@@ -43,8 +43,8 @@ class XMLReader
     /**
      * Get DOMDocument from ZipArchive
      *
-     * @param string $zipFile
-     * @param string $xmlFile
+     * @param SharedString $zipFile
+     * @param SharedString $xmlFile
      * @return \DOMDocument|false
      * @throws \PhpOffice\PhpWord\Exception\Exception
      */
@@ -69,7 +69,7 @@ class XMLReader
     /**
      * Get DOMDocument from content string
      *
-     * @param string $content
+     * @param SharedString $content
      * @return \DOMDocument
      */
     public function getDomFromString($content)
@@ -83,7 +83,7 @@ class XMLReader
     /**
      * Get elements
      *
-     * @param string $path
+     * @param SharedString $path
      * @param \DOMElement $contextNode
      * @return \DOMNodeList
      */
@@ -106,7 +106,7 @@ class XMLReader
     /**
      * Get element
      *
-     * @param string $path
+     * @param SharedString $path
      * @param \DOMElement $contextNode
      * @return \DOMElement|null
      */
@@ -123,10 +123,10 @@ class XMLReader
     /**
      * Get element attribute
      *
-     * @param string $attribute
+     * @param SharedString $attribute
      * @param \DOMElement $contextNode
-     * @param string $path
-     * @return string|null
+     * @param SharedString $path
+     * @return SharedString|null
      */
     public function getAttribute($attribute, \DOMElement $contextNode = null, $path = null)
     {
@@ -150,9 +150,9 @@ class XMLReader
     /**
      * Get element value
      *
-     * @param string $path
+     * @param SharedString $path
      * @param \DOMElement $contextNode
-     * @return string|null
+     * @return SharedString|null
      */
     public function getValue($path, \DOMElement $contextNode = null)
     {
@@ -167,7 +167,7 @@ class XMLReader
     /**
      * Count elements
      *
-     * @param string $path
+     * @param SharedString $path
      * @param \DOMElement $contextNode
      * @return integer
      */
@@ -181,7 +181,7 @@ class XMLReader
     /**
      * Element exists
      *
-     * @param string $path
+     * @param SharedString $path
      * @param \DOMElement $contextNode
      * @return boolean
      */

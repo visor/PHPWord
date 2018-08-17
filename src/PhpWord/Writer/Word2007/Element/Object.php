@@ -35,7 +35,7 @@ class Object extends AbstractElement
     {
         $xmlWriter = $this->getXmlWriter();
         $element = $this->getElement();
-        if (!$element instanceof \PhpOffice\PhpWord\Element\Object) {
+        if (!$element instanceof \PhpOffice\PhpWord\Element\ObjectElement) {
             return;
         }
 

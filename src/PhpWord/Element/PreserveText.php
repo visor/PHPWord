@@ -17,7 +17,7 @@
 
 namespace PhpOffice\PhpWord\Element;
 
-use PhpOffice\PhpWord\Shared\String;
+use PhpOffice\PhpWord\Shared\SharedString;
 use PhpOffice\PhpWord\Style\Font;
 use PhpOffice\PhpWord\Style\Paragraph;
 
@@ -29,21 +29,21 @@ class PreserveText extends AbstractElement
     /**
      * Text content
      *
-     * @var string
+     * @var SharedString
      */
     private $text;
 
     /**
      * Text style
      *
-     * @var string|\PhpOffice\PhpWord\Style\Font
+     * @var SharedString|\PhpOffice\PhpWord\Style\Font
      */
     private $fontStyle;
 
     /**
      * Paragraph style
      *
-     * @var string|\PhpOffice\PhpWord\Style\Paragraph
+     * @var SharedString|\PhpOffice\PhpWord\Style\Paragraph
      */
     private $paragraphStyle;
 
@@ -51,7 +51,7 @@ class PreserveText extends AbstractElement
     /**
      * Create a new Preserve Text Element
      *
-     * @param string $text
+     * @param SharedString $text
      * @param mixed $fontStyle
      * @param mixed $paragraphStyle
      * @return self
@@ -61,7 +61,7 @@ class PreserveText extends AbstractElement
         $this->fontStyle = $this->setNewStyle(new Font('text'), $fontStyle);
         $this->paragraphStyle = $this->setNewStyle(new Paragraph(), $paragraphStyle);
 
-        $this->text = String::toUTF8($text);
+        $this->text = SharedString::toUTF8($text);
         $matches = preg_split('/({.*?})/', $this->text, null, PREG_SPLIT_DELIM_CAPTURE | PREG_SPLIT_NO_EMPTY);
         if (isset($matches[0])) {
             $this->text = $matches;
@@ -73,7 +73,7 @@ class PreserveText extends AbstractElement
     /**
      * Get Text style
      *
-     * @return string|\PhpOffice\PhpWord\Style\Font
+     * @return SharedString|\PhpOffice\PhpWord\Style\Font
      */
     public function getFontStyle()
     {
@@ -83,7 +83,7 @@ class PreserveText extends AbstractElement
     /**
      * Get Paragraph style
      *
-     * @return string|\PhpOffice\PhpWord\Style\Paragraph
+     * @return SharedString|\PhpOffice\PhpWord\Style\Paragraph
      */
     public function getParagraphStyle()
     {
@@ -93,7 +93,7 @@ class PreserveText extends AbstractElement
     /**
      * Get Text content
      *
-     * @return string
+     * @return SharedString
      */
     public function getText()
     {

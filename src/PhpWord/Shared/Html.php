@@ -32,7 +32,7 @@ class Html
      * Note: $stylesheet parameter is removed to avoid PHPMD error for unused parameter
      *
      * @param \PhpOffice\PhpWord\Element\AbstractContainer $element Where the parts need to be added
-     * @param string $html The code to parse
+     * @param SharedString $html The code to parse
      * @param bool $fullHTML If it's a full HTML, no need to add 'body' tag
      * @return void
      */
@@ -206,7 +206,7 @@ class Html
      *
      * @param \PhpOffice\PhpWord\Element\AbstractContainer $element
      * @param array &$styles
-     * @param string $argument1 Name of heading style
+     * @param SharedString $argument1 Name of heading style
      * @return \PhpOffice\PhpWord\Element\TextRun
      *
      * @todo Think of a clever way of defining header styles, now it is only based on the assumption, that
@@ -245,8 +245,8 @@ class Html
      * Parse property node
      *
      * @param array &$styles
-     * @param string $argument1 Style name
-     * @param string $argument2 Style value
+     * @param SharedString $argument1 Style name
+     * @param SharedString $argument2 Style value
      * @return null
      */
     private static function parseProperty(&$styles, $argument1, $argument2)
@@ -262,7 +262,7 @@ class Html
      * @param \DOMNode $node
      * @param \PhpOffice\PhpWord\Element\AbstractContainer $element
      * @param array &$styles
-     * @param string $argument1 Method name
+     * @param SharedString $argument1 Method name
      * @return \PhpOffice\PhpWord\Element\AbstractContainer $element
      *
      * @todo As soon as TableItem, RowItem and CellItem support relative width and height
@@ -293,7 +293,7 @@ class Html
      *
      * @param array &$styles
      * @param array &$data
-     * @param string $argument1 List type
+     * @param SharedString $argument1 List type
      * @return null
      */
     private static function parseList(&$styles, &$data, $argument1)

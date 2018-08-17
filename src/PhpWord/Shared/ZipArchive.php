@@ -27,10 +27,10 @@ use PhpOffice\PhpWord\Settings;
  * properties and methods are bypassed and used as the model for the PCLZip
  * emulation. Only needed PHP ZipArchive features are implemented.
  *
- * @method  bool addFile(string $filename, string $localname = null)
- * @method  bool addFromString(string $localname, string $contents)
- * @method  string getNameIndex(int $index)
- * @method  int locateName(string $name)
+ * @method  bool addFile(SharedString $filename, SharedString $localname = null)
+ * @method  bool addFromString(SharedString $localname, SharedString $contents)
+ * @method  SharedString getNameIndex(int $index)
+ * @method  int locateName(SharedString $name)
  *
  * @since   0.10.0
  */
@@ -50,14 +50,14 @@ class ZipArchive
     /**
      * Archive filename (emulate ZipArchive::$filename)
      *
-     * @var string
+     * @var SharedString
      */
     public $filename;
 
     /**
      * Temporary storage directory
      *
-     * @var string
+     * @var SharedString
      */
     private $tempDir;
 
@@ -121,7 +121,7 @@ class ZipArchive
     /**
      * Open a new zip archive
      *
-     * @param string $filename The file name of the ZIP archive to open
+     * @param SharedString $filename The file name of the ZIP archive to open
      * @param int $flags The mode to use to open the archive
      * @return bool
      */
@@ -168,8 +168,8 @@ class ZipArchive
     /**
      * Extract the archive contents (emulate \ZipArchive)
      *
-     * @param string $destination
-     * @param string|array $entries
+     * @param SharedString $destination
+     * @param SharedString|array $entries
      * @return bool
      * @since 0.10.0
      */
@@ -189,8 +189,8 @@ class ZipArchive
     /**
      * Extract file from archive by given file name (emulate \ZipArchive)
      *
-     * @param  string $filename Filename for the file in zip archive
-     * @return string $contents File string contents
+     * @param  SharedString $filename Filename for the file in zip archive
+     * @return SharedString $contents File string contents
      */
     public function getFromName($filename)
     {
@@ -210,8 +210,8 @@ class ZipArchive
     /**
      * Add a new file to the zip archive (emulate \ZipArchive)
      *
-     * @param string $filename Directory/Name of the file to add to the zip archive
-     * @param string $localname Directory/Name of the file added to the zip
+     * @param SharedString $filename Directory/Name of the file to add to the zip archive
+     * @param SharedString $localname Directory/Name of the file added to the zip
      * @return bool
      */
     public function pclzipAddFile($filename, $localname = null)
@@ -255,8 +255,8 @@ class ZipArchive
     /**
      * Add a new file to the zip archive from a string of raw data (emulate \ZipArchive)
      *
-     * @param string $localname Directory/Name of the file to add to the zip archive
-     * @param string $contents String of data to add to the zip archive
+     * @param SharedString $localname Directory/Name of the file to add to the zip archive
+     * @param SharedString $contents String of data to add to the zip archive
      * @return bool
      */
     public function pclzipAddFromString($localname, $contents)
@@ -286,8 +286,8 @@ class ZipArchive
     /**
      * Extract the archive contents (emulate \ZipArchive)
      *
-     * @param string $destination
-     * @param string|array $entries
+     * @param SharedString $destination
+     * @param SharedString|array $entries
      * @return bool
      * @since 0.10.0
      */
@@ -320,8 +320,8 @@ class ZipArchive
     /**
      * Extract file from archive by given file name (emulate \ZipArchive)
      *
-     * @param  string $filename Filename for the file in zip archive
-     * @return string $contents File string contents
+     * @param  SharedString $filename Filename for the file in zip archive
+     * @return SharedString $contents File string contents
      */
     public function pclzipGetFromName($filename)
     {
@@ -348,7 +348,7 @@ class ZipArchive
      * Returns the name of an entry using its index (emulate \ZipArchive)
      *
      * @param int $index
-     * @return string
+     * @return SharedString
      * @since 0.10.0
      */
     public function pclzipGetNameIndex($index)
@@ -366,7 +366,7 @@ class ZipArchive
     /**
      * Returns the index of the entry in the archive (emulate \ZipArchive)
      *
-     * @param string $filename Filename for the file in zip archive
+     * @param SharedString $filename Filename for the file in zip archive
      * @return int
      */
     public function pclzipLocateName($filename)

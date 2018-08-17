@@ -17,7 +17,7 @@
 
 namespace PhpOffice\PhpWord\Writer\RTF\Element;
 
-use PhpOffice\PhpWord\Shared\String;
+use PhpOffice\PhpWord\Shared\SharedString;
 use PhpOffice\PhpWord\Style\Font as FontStyle;
 use PhpOffice\PhpWord\Style;
 use PhpOffice\PhpWord\Style\Paragraph as ParagraphStyle;
@@ -91,7 +91,7 @@ abstract class AbstractElement extends HTMLAbstractElement
     /**
      * Write opening
      *
-     * @return string
+     * @return SharedString
      */
     protected function writeOpening()
     {
@@ -107,18 +107,18 @@ abstract class AbstractElement extends HTMLAbstractElement
     /**
      * Write text
      *
-     * @param string $text
-     * @return string
+     * @param SharedString $text
+     * @return SharedString
      */
     protected function writeText($text)
     {
-        return String::toUnicode($text);
+        return SharedString::toUnicode($text);
     }
 
     /**
      * Write closing
      *
-     * @return string
+     * @return SharedString
      */
     protected function writeClosing()
     {
@@ -132,7 +132,7 @@ abstract class AbstractElement extends HTMLAbstractElement
     /**
      * Write font style
      *
-     * @return string
+     * @return SharedString
      */
     protected function writeFontStyle()
     {

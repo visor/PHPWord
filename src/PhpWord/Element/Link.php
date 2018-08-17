@@ -17,7 +17,7 @@
 
 namespace PhpOffice\PhpWord\Element;
 
-use PhpOffice\PhpWord\Shared\String;
+use PhpOffice\PhpWord\Shared\SharedString;
 use PhpOffice\PhpWord\Style\Font;
 use PhpOffice\PhpWord\Style\Paragraph;
 
@@ -29,28 +29,28 @@ class Link extends AbstractElement
     /**
      * Link source
      *
-     * @var string
+     * @var SharedString
      */
     private $source;
 
     /**
      * Link text
      *
-     * @var string
+     * @var SharedString
      */
     private $text;
 
     /**
      * Font style
      *
-     * @var string|\PhpOffice\PhpWord\Style\Font
+     * @var SharedString|\PhpOffice\PhpWord\Style\Font
      */
     private $fontStyle;
 
     /**
      * Paragraph style
      *
-     * @var string|\PhpOffice\PhpWord\Style\Paragraph
+     * @var SharedString|\PhpOffice\PhpWord\Style\Paragraph
      */
     private $paragraphStyle;
 
@@ -71,15 +71,15 @@ class Link extends AbstractElement
     /**
      * Create a new Link Element
      *
-     * @param string $source
-     * @param string $text
+     * @param SharedString $source
+     * @param SharedString $text
      * @param mixed $fontStyle
      * @param mixed $paragraphStyle
      */
     public function __construct($source, $text = null, $fontStyle = null, $paragraphStyle = null, $internal = false)
     {
-        $this->source = String::toUTF8($source);
-        $this->text = is_null($text) ? $this->source : String::toUTF8($text);
+        $this->source = SharedString::toUTF8($source);
+        $this->text = is_null($text) ? $this->source : SharedString::toUTF8($text);
         $this->fontStyle = $this->setNewStyle(new Font('text'), $fontStyle);
         $this->paragraphStyle = $this->setNewStyle(new Paragraph(), $paragraphStyle);
         $this->internal = $internal;
@@ -89,7 +89,7 @@ class Link extends AbstractElement
     /**
      * Get link source
      *
-     * @return string
+     * @return SharedString
      */
     public function getSource()
     {
@@ -99,7 +99,7 @@ class Link extends AbstractElement
     /**
      * Get link text
      *
-     * @return string
+     * @return SharedString
      */
     public function getText()
     {
@@ -109,7 +109,7 @@ class Link extends AbstractElement
     /**
      * Get Text style
      *
-     * @return string|\PhpOffice\PhpWord\Style\Font
+     * @return SharedString|\PhpOffice\PhpWord\Style\Font
      */
     public function getFontStyle()
     {
@@ -119,7 +119,7 @@ class Link extends AbstractElement
     /**
      * Get Paragraph style
      *
-     * @return string|\PhpOffice\PhpWord\Style\Paragraph
+     * @return SharedString|\PhpOffice\PhpWord\Style\Paragraph
      */
     public function getParagraphStyle()
     {
@@ -129,7 +129,7 @@ class Link extends AbstractElement
     /**
      * Get link target
      *
-     * @return string
+     * @return SharedString
      * @deprecated 0.12.0
      * @codeCoverageIgnore
      */
@@ -141,7 +141,7 @@ class Link extends AbstractElement
     /**
      * Get Link source
      *
-     * @return string
+     * @return SharedString
      * @deprecated 0.10.0
      * @codeCoverageIgnore
      */
@@ -153,7 +153,7 @@ class Link extends AbstractElement
     /**
      * Get Link name
      *
-     * @return string
+     * @return SharedString
      * @deprecated 0.10.0
      * @codeCoverageIgnore
      */

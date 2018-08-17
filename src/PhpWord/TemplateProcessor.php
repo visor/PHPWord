@@ -20,7 +20,7 @@ namespace PhpOffice\PhpWord;
 use PhpOffice\PhpWord\Exception\CopyFileException;
 use PhpOffice\PhpWord\Exception\CreateTemporaryFileException;
 use PhpOffice\PhpWord\Exception\Exception;
-use PhpOffice\PhpWord\Shared\String;
+use PhpOffice\PhpWord\Shared\SharedString;
 use PhpOffice\PhpWord\Shared\ZipArchive;
 
 class TemplateProcessor
@@ -33,35 +33,35 @@ class TemplateProcessor
     protected $zipClass;
 
     /**
-     * @var string Temporary document filename (with path).
+     * @var SharedString Temporary document filename (with path).
      */
     protected $temporaryDocumentFilename;
 
     /**
      * Content of main document part (in XML format) of the temporary document.
      *
-     * @var string
+     * @var SharedString
      */
     protected $temporaryDocumentMainPart;
 
     /**
      * Content of headers (in XML format) of the temporary document.
      *
-     * @var string[]
+     * @var SharedString[]
      */
     protected $temporaryDocumentHeaders = array();
 
     /**
      * Content of footers (in XML format) of the temporary document.
      *
-     * @var string[]
+     * @var SharedString[]
      */
     protected $temporaryDocumentFooters = array();
 
     /**
      * @since 0.12.0 Throws CreateTemporaryFileException and CopyFileException instead of Exception.
      *
-     * @param string $documentTemplate The fully qualified template filename.
+     * @param SharedString $documentTemplate The fully qualified template filename.
      * @throws \PhpOffice\PhpWord\Exception\CreateTemporaryFileException
      * @throws \PhpOffice\PhpWord\Exception\CopyFileException
      */
@@ -99,7 +99,7 @@ class TemplateProcessor
      *
      * @param \DOMDocument $xslDOMDocument
      * @param array $xslOptions
-     * @param string $xslOptionsURI
+     * @param SharedString $xslOptionsURI
      * @return void
      * @throws \PhpOffice\PhpWord\Exception\Exception
      */
@@ -148,7 +148,7 @@ class TemplateProcessor
     /**
      * Returns array of all variables in template.
      *
-     * @return string[]
+     * @return SharedString[]
      */
     public function getVariables()
     {
@@ -168,10 +168,10 @@ class TemplateProcessor
     /**
      * Clone a table row in a template document.
      *
-     * @param string $search
+     * @param SharedString $search
      * @param integer $numberOfClones
-     * @param string|null $source
-     * @return string
+     * @param SharedString|null $source
+     * @return SharedString
      * @throws \PhpOffice\PhpWord\Exception\Exception
      */
     public function cloneRow($search, $numberOfClones, $source = null)
@@ -235,10 +235,10 @@ class TemplateProcessor
     /**
      * Clone a block.
      *
-     * @param string $blockname
+     * @param SharedString $blockname
      * @param integer $clones
      * @param boolean $replace
-     * @return string|null
+     * @return SharedString|null
      */
     public function cloneBlock($blockname, $clones = 1, $replace = true)
     {
@@ -267,8 +267,8 @@ class TemplateProcessor
     /**
      * Replace a block.
      *
-     * @param string $blockname
-     * @param string $replacement
+     * @param SharedString $blockname
+     * @param SharedString $replacement
      * @return void
      */
     public function replaceBlock($blockname, $replacement)
@@ -287,7 +287,7 @@ class TemplateProcessor
     /**
      * Delete a block of text.
      *
-     * @param string $blockname
+     * @param SharedString $blockname
      * @return void
      */
     public function deleteBlock($blockname)
@@ -298,7 +298,7 @@ class TemplateProcessor
     /**
      * Saves the result document.
      *
-     * @return string
+     * @return SharedString
      * @throws \PhpOffice\PhpWord\Exception\Exception
      */
     public function save()
@@ -326,7 +326,7 @@ class TemplateProcessor
      *
      * @since 0.8.0
      *
-     * @param string $fileName
+     * @param SharedString $fileName
      * @return void
      */
     public function saveAs($fileName)
@@ -343,11 +343,11 @@ class TemplateProcessor
     /**
      * Find and replace placeholders in the given XML section.
      *
-     * @param string $documentPartXML
-     * @param string $search
-     * @param string $replace
+     * @param SharedString $documentPartXML
+     * @param SharedString $search
+     * @param SharedString $replace
      * @param integer $limit
-     * @return string
+     * @return SharedString
      */
     protected function setValueForPart($documentPartXML, $search, $replace, $limit)
     {
@@ -363,7 +363,7 @@ class TemplateProcessor
             $search = '${' . $search . '}';
         }
 
-        if (!String::isUTF8($replace)) {
+        if (!SharedString::isUTF8($replace)) {
             $replace = utf8_encode($replace);
         }
 
@@ -375,8 +375,8 @@ class TemplateProcessor
     /**
      * Find all variables in $documentPartXML.
      *
-     * @param string $documentPartXML
-     * @return string[]
+     * @param SharedString $documentPartXML
+     * @return SharedString[]
      */
     protected function getVariablesForPart($documentPartXML)
     {
@@ -389,7 +389,7 @@ class TemplateProcessor
      * Get the name of the footer file for $index.
      *
      * @param integer $index
-     * @return string
+     * @return SharedString
      */
     protected function getFooterName($index)
     {
@@ -400,7 +400,7 @@ class TemplateProcessor
      * Get the name of the header file for $index.
      *
      * @param integer $index
-     * @return string
+     * @return SharedString
      */
     protected function getHeaderName($index)
     {
@@ -411,7 +411,7 @@ class TemplateProcessor
      * Find the start position of the nearest table row before $offset.
      *
      * @param integer $offset
-     * @param string|null $source
+     * @param SharedString|null $source
      * @return integer
      * @throws \PhpOffice\PhpWord\Exception\Exception
      */
@@ -424,7 +424,7 @@ class TemplateProcessor
      * Find the end position of the nearest table row after $offset.
      *
      * @param integer $offset
-     * @param string|null $source
+     * @param SharedString|null $source
      * @return integer
      */
     protected function findRowEnd($offset, $source = null)
@@ -437,8 +437,8 @@ class TemplateProcessor
      *
      * @param integer $startPosition
      * @param integer $endPosition
-     * @param string|null $source
-     * @return string
+     * @param SharedString|null $source
+     * @return SharedString
      */
     protected function getSlice($startPosition, $endPosition = 0, $source = null)
     {

@@ -18,7 +18,7 @@
 namespace PhpOffice\PhpWord\Style;
 
 use PhpOffice\PhpWord\Exception\InvalidStyleException;
-use PhpOffice\PhpWord\Shared\String;
+use PhpOffice\PhpWord\Shared\SharedString;
 
 /**
  * Paragraph style
@@ -64,14 +64,14 @@ class Paragraph extends Border
     /**
      * Parent style
      *
-     * @var string
+     * @var SharedString
      */
     private $basedOn = 'Normal';
 
     /**
      * Style for next paragraph
      *
-     * @var string
+     * @var SharedString
      */
     private $next;
 
@@ -134,7 +134,7 @@ class Paragraph extends Border
     /**
      * Numbering style name
      *
-     * @var string
+     * @var SharedString
      */
     private $numStyle;
 
@@ -170,13 +170,13 @@ class Paragraph extends Border
     /**
      * Set Style value
      *
-     * @param string $key
+     * @param SharedString $key
      * @param mixed $value
      * @return self
      */
     public function setStyleValue($key, $value)
     {
-        $key = String::removeUnderscorePrefix($key);
+        $key = SharedString::removeUnderscorePrefix($key);
         if ($key == 'indent' || $key == 'hanging') {
             $value = $value * 720;
         } elseif ($key == 'spacing') {
@@ -225,7 +225,7 @@ class Paragraph extends Border
     /**
      * Get alignment
      *
-     * @return string
+     * @return SharedString
      */
     public function getAlign()
     {
@@ -235,7 +235,7 @@ class Paragraph extends Border
     /**
      * Set alignment
      *
-     * @param string $value
+     * @param SharedString $value
      * @return self
      */
     public function setAlign($value = null)
@@ -248,7 +248,7 @@ class Paragraph extends Border
     /**
      * Get parent style ID
      *
-     * @return string
+     * @return SharedString
      */
     public function getBasedOn()
     {
@@ -258,7 +258,7 @@ class Paragraph extends Border
     /**
      * Set parent style ID
      *
-     * @param string $value
+     * @param SharedString $value
      * @return self
      */
     public function setBasedOn($value = 'Normal')
@@ -271,7 +271,7 @@ class Paragraph extends Border
     /**
      * Get style for next paragraph
      *
-     * @return string
+     * @return SharedString
      */
     public function getNext()
     {
@@ -281,7 +281,7 @@ class Paragraph extends Border
     /**
      * Set style for next paragraph
      *
-     * @param string $value
+     * @param SharedString $value
      * @return self
      */
     public function setNext($value = null)
@@ -457,7 +457,7 @@ class Paragraph extends Border
     /**
      * Set the line height
      *
-     * @param int|float|string $lineHeight
+     * @param int|float|SharedString $lineHeight
      * @return self
      * @throws \PhpOffice\PhpWord\Exception\InvalidStyleException
      */
@@ -571,7 +571,7 @@ class Paragraph extends Border
     /**
      * Get numbering style name
      *
-     * @return string
+     * @return SharedString
      */
     public function getNumStyle()
     {
@@ -581,7 +581,7 @@ class Paragraph extends Border
     /**
      * Set numbering style name
      *
-     * @param string $value
+     * @param SharedString $value
      * @return self
      */
     public function setNumStyle($value)
