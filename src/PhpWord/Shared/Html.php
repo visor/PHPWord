@@ -175,7 +175,7 @@ class Html
     {
         if ($node->nodeName != 'li') {
             $cNodes = $node->childNodes;
-            if (count($cNodes) > 0) {
+            if ($cNodes instanceof DOMNodeList && $cNodes->length > 0) {
                 foreach ($cNodes as $cNode) {
                     if ($element instanceof AbstractContainer) {
                         self::parseNode($cNode, $element, $styles, $data);

@@ -104,7 +104,7 @@ class SectionTest extends \PHPUnit_Framework_TestCase
 
         $elementCollection = $section->getElements();
         $elementTypes = array('Text', 'Link', 'TextBreak', 'PageBreak',
-            'Table', 'ListItem', 'Object', 'Image',
+            'Table', 'ListItem', 'ObjectElement', 'Image',
             'Title', 'TextRun', 'Footnote', 'CheckBox', 'TOC');
         $elmCount = 0;
         foreach ($elementTypes as $elementType) {

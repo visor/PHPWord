@@ -126,7 +126,7 @@ abstract class AbstractContainer extends AbstractElement
      */
     protected function addElement($elementName)
     {
-        $elementClass = __NAMESPACE__ . '\\' . $elementName;
+        $elementClass = __NAMESPACE__ . '\\' . $elementName . ('Object' === $elementName ? 'Element' : '');
         $this->checkValidity($elementName);
 
         // Get arguments

@@ -170,6 +170,9 @@ class Settings extends AbstractPart
     {
         $compatibility = $this->getParentWriter()->getPhpWord()->getCompatibility();
         if ($compatibility->getOoxmlVersion() !== null) {
+            if (!is_array($this->settings['w:compat'])) {
+                $this->settings['w:compat'] = array();
+            }
             $this->settings['w:compat']['w:compatSetting'] = array('@attributes' => array(
                 'w:name'    => 'compatibilityMode',
                 'w:uri'     => 'http://schemas.microsoft.com/office/word',
